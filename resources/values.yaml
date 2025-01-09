@@ -1,0 +1,16 @@
+namespace: ecostream
+components:
+  ecostreamManager:
+    serviceName: ecostream-manager-service
+    port: 9000
+    image:
+      repository: registry.gitlab.com/gkermo/ecostream-manager
+      tag: main-ab387586-amd64
+  ecostreamVisualizer:
+    serviceName: ecostream-visualizer-service
+    port: 80
+    image:
+      repository: registry.gitlab.com/gkermo/ecostream-visualizer
+      tag: main-a0c67820-amd64
+settings:
+  ha: false

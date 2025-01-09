@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ecostream-manager-netpol
+  namespace: "{{ .Values.namespace }}"
+spec:
+  podSelector:
+    matchLabels:
+      app: ecostream-manager
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: ecostream-visualizer
+      ports:
+        - protocol: TCP
+          port: {{ .Values.components.ecostreamManager.port }}

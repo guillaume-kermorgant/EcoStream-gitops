@@ -1,0 +1,25 @@
+# Must be deployed as a prereq from configuration script
+apiVersion: v1
+data:
+  ECOSTREAM_MANAGER_PASSWORD: bWFuYWdlci1wYXNzd29yZA==
+  ECOSTREAM_MANAGER_USERNAME: bWFuYWdlcg==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: ecostream-manager-secret
+  namespace: "{{ .Values.namespace }}"
+---
+# k create secret docker-registry ecostream-container-registry-secret \
+# --docker-server=registry.gitlab.com \
+# --docker-username=gkermo \
+# --docker-password=$GITLAB_TOKEN \
+# --dry-run=client -o yaml
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJyZWdpc3RyeS5naXRsYWIuY29tIjp7InVzZXJuYW1lIjoiZ2tlcm1vIiwicGFzc3dvcmQiOiJnbHBhdC1wSkY4S194S3RaNE04V2Fna2FHZyIsImF1dGgiOiJaMnRsY20xdk9tZHNjR0YwTFhCS1JqaExYM2hMZEZvMFRUaFhZV2RyWVVkbiJ9fX0=
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: ecostream-container-registry-secret
+  namespace: "{{ .Values.namespace }}"
+type: kubernetes.io/dockerconfigjson

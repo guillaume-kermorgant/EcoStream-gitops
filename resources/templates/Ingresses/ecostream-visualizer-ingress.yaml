@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ecostream-visualizer-ingress
+  namespace: "{{ .Values.namespace }}"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: "ecostream-visualizer.local" # 192.168.49.2 # minikube ip, this should be set to the EKS host
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: "{{ .Values.components.ecostreamVisualizer.serviceName }}"
+                port:
+                  number: {{ .Values.components.ecostreamVisualizer.port }}

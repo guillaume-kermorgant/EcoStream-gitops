@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: ecostream-applicationset
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - name: dev
+            valuesFile: values-dev.yaml
+            namespace: ecostream-dev
+  # add other environments here if needed
+  template:
+    metadata:
+      name: ecostream-{{name}}
+    spec:
+      project: default
+      source:
+        repoURL: https://gitlab.com/gkermo/ecostream-gitops.git
+        targetRevision: HEAD
+        chart: ecostream
+        helm:
+          valueFiles:
+            - { { valuesFile } }
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: { { namespace } }
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

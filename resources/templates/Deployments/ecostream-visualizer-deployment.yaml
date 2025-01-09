@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecostream-visualizer
+  namespace: "{{ .Values.namespace }}"
+spec:
+  replicas: {{ .Values.settings.ha | ternary 3 1 }}
+  selector:
+    matchLabels:
+      app: ecostream-visualizer
+  template:
+    metadata:
+      labels:
+        app: ecostream-visualizer
+    spec:
+      imagePullSecrets:
+        - name: ecostream-container-registry-secret
+      containers:
+      - name: visualizer
+        image: "{{ .Values.components.ecostreamVisualizer.image.repository }}:{{ .Values.components.ecostreamVisualizer.image.tag }}"
+        ports:
+          - containerPort: {{ .Values.components.ecostreamVisualizer.port }}
+            name: vis-http
+        env:
+          - name: REACT_APP_ECOSTREAM_MANAGER_URL
+            value: "http://{{ .Values.components.ecostreamManager.serviceName }}:{{ .Values.components.ecostreamManager.port }}"
+          - name: REACT_APP_ECOSTREAM_MANAGER_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ecostream-manager-secret
+                key: ECOSTREAM_MANAGER_USERNAME
+          - name: REACT_APP_ECOSTREAM_MANAGER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ecostream-manager-secret
+                key: ECOSTREAM_MANAGER_PASSWORD

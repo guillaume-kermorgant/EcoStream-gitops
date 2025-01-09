@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Values.components.ecostreamVisualizer.serviceName }}"
+  namespace: "{{ .Values.namespace }}"
+spec:
+  selector:
+    app: ecostream-visualizer
+  ports:
+    - port: {{ .Values.components.ecostreamVisualizer.port }}
+      targetPort: vis-http
+      name: vis-port
+  type: ClusterIP
