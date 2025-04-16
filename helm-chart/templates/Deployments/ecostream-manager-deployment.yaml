@@ -35,3 +35,15 @@ spec:
                 secretKeyRef:
                   name: ecostream-manager-secret
                   key: ECOSTREAM_MANAGER_PASSWORD
+            - name: ECOSTREAM_DB_HOST
+              value: "{{ .Values.components.ecostreamDatabase.serviceName }}"
+            - name: ECOSTREAM_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: ecostream-database-secret
+                  key: ECOSTREAM_DB_USER
+            - name: ECOSTREAM_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ecostream-database-secret
+                  key: ECOSTREAM_DB_PASSWORD

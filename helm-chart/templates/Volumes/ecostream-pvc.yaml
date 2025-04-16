@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ecostream-pvc
+  namespace: "{{ .Values.namespace }}"
+  labels:
+    type: local
+    app: ecostream-database
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resource:
+    requests:
+      storage: 1Gi

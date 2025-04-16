@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecostream-database
+  namespace: "{{ .Values.namespace }}"
+  labels:
+    app: ecostream-database
+spec:
+  replicas: {{ .Values.settings.ha | ternary 3 1 }}
+  selector:
+    matchLabels:
+      app: ecostream-database
+  template:
+    metadata:
+      labels:
+        app: ecostream-database
+    spec:
+      imagePullSecrets:
+        - name: ecostream-container-registry-secret
+      containers:
+      - name: postgres
+        image: "{{ .Values.components.ecostreamDatabase.image.repository }}:{{ .Values.components.ecostreamDatabase.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: {{ .Values.components.ecostreamDatabase.port }}
+          name: db-http
+        env:
+          - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: ecostream-database-secret
+                  key: ECOSTREAM_DB_USER
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ecostream-database-secret
+                key: ECOSTREAM_DB_PASSWORD
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: postgresdata
+      volumes:
+      - name: ecostream-volume
+        persistentVolumeClaim:
+          claimName: ecostream-pvc

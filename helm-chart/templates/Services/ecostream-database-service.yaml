@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Values.components.ecostreamDatabase.serviceName }}"
+  namespace: "{{ .Values.namespace }}"
+spec:
+  selector:
+    app: ecostream-database
+  ports:
+    - port: {{ .Values.components.ecostreamDatabase.port }}
+      targetPort: db-http
+  type: ClusterIP
