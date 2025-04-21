@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ecostream-configure-resources
+  namespace: "{{ .Values.namespace }}"
+spec:
+  template:
+    spec:
+      serviceAccountName: ecostream-sa
+      containers:
+        - name: configure-resources
+          image: "{{ .Values.tools.kubectl.image.repository }}:{{ .Values.tools.kubectl.image.tag }}"
+          env:
+          - name: NAMESPACE
+            value: "{{ .Values.namespace }}"
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              set -e
+              echo "Retrieving Ecostream Manager Ingress address..."
+              ecostreamManagerAddress=$(kubectl get ingress ecostream-manager-ingress -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+              echo "Ecostream Manager Ingress address is $ecostreamManagerAddress"
+
+              echo "Creating/updating Ecostream ConfigMap..."
+              kubectl patch configmap ecostream-configmap \
+                --namespace $NAMESPACE \
+                --type merge \
+                -p "{\"data\":{\"ECOSTREAM_MANAGER_URL\":\"http://${ecostreamManagerAddress}\"}}"
+
+              echo "Done!"
+
+      restartPolicy: Never
+  backoffLimit: 2

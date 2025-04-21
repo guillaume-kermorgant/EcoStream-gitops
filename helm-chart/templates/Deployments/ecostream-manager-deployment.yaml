@@ -20,7 +20,7 @@ spec:
       containers:
         - name: ecostream-manager
           image: "{{ .Values.components.ecostreamManager.image.repository }}:{{ .Values.components.ecostreamManager.image.tag }}"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.components.ecostreamManager.port }}
               name: manager-http

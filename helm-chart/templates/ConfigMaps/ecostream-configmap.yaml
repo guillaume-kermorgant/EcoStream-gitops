@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ecostream-configmap
+  namespace: {{ .Values.namespace }}
+data:
+  import-data.sh: |-
+    # This script populates the EcoStream database with the data from the aiq_data_france.json file
+    #!/bin/bash
+
+    set -u
+
+    if [[ -z "${ECOSTREAM_MANAGER_URL}" ]]; then
+        echo "Must provide environment variable ECOSTREAM_MANAGER_URL. Exiting...."
+        exit 1
+    fi
+
+    if [[ -z "${ECOSTREAM_MANAGER_USERNAME}" ]]; then
+        echo "Must provide environment variable ECOSTREAM_MANAGER_USERNAME. Exiting...."
+        exit 1
+    fi
+
+    if [[ -z "${ECOSTREAM_MANAGER_PASSWORD}" ]]; then
+        echo "Must provide environment variable ECOSTREAM_MANAGER_PASSWORD. Exiting...."
+        exit 1
+    fi
+
+    # Check if the database is already populated
+    cities=$(curl -X GET "${ECOSTREAM_MANAGER_URL}/api/v1/cities" -H "Content-Type: application/json" -u "${ECOSTREAM_MANAGER_USERNAME}:${ECOSTREAM_MANAGER_PASSWORD}" -s)
+    echo "Retrieved cities: ${cities}"
+
+    if [[ "${cities}" == "[]" ]]; then
+        echo "Database looks empty, populating with data from aiq_data_france.json..."
+        curl -X POST "${ECOSTREAM_MANAGER_URL}/api/v1/aqi" -H "Content-Type: application/json" -u "${ECOSTREAM_MANAGER_USERNAME}:${ECOSTREAM_MANAGER_PASSWORD}" \
+            -d @aiq_data_france.json
+        exit 0
+    fi
+
+    echo "Database does not look empty or curl returned an error. Exiting..."
+    exit 1
+

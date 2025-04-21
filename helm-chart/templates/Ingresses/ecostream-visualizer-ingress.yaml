@@ -4,11 +4,13 @@ metadata:
   name: ecostream-visualizer-ingress
   namespace: "{{ .Values.namespace }}"
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/scheme: internet-facing
 spec:
   rules:
-    - host: "ecostream-visualizer.local" # 192.168.49.2 # minikube ip, this should be set to the EKS host
-      http:
+    # - host: "ecostream-visualizer.local" # change to custom host name when Route 53 is configured (?)
+    - http:
         paths:
           - path: /
             pathType: Prefix

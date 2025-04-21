@@ -4,11 +4,13 @@ metadata:
   name: ecostream-manager-ingress
   namespace: "{{ .Values.namespace }}"
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/scheme: internet-facing
 spec:
   rules:
-    - host: "ecostream-manager.local" # 192.168.49.2 # minikube ip, this should be set to the EKS host
-      http:
+    # - host: "ecostream-manager.local" // set this to custom hostname
+    - http:
         paths:
           - path: /
             pathType: Prefix

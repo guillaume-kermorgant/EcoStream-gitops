@@ -20,3 +20,8 @@ components:
       tag: main-b50b0727-amd64
 settings:
   ha: false
+tools:
+  kubectl:
+    image:
+      repository: registry.gitlab.com/gkermo/ecostream/base_images/bitnami-kubectl
+      tag: 1.32-amd64

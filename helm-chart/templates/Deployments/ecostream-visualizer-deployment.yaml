@@ -14,23 +14,27 @@ spec:
         app: ecostream-visualizer
     spec:
       imagePullSecrets:
-        - name: ecostream-container-registry-secret
+      - name: ecostream-container-registry-secret
       containers:
       - name: visualizer
         image: "{{ .Values.components.ecostreamVisualizer.image.repository }}:{{ .Values.components.ecostreamVisualizer.image.tag }}"
+        imagePullPolicy: Always
         ports:
-          - containerPort: {{ .Values.components.ecostreamVisualizer.port }}
-            name: vis-http
+        - containerPort: {{ .Values.components.ecostreamVisualizer.port }}
+          name: vis-http
         env:
-          - name: REACT_APP_ECOSTREAM_MANAGER_URL
-            value: "http://{{ .Values.components.ecostreamManager.serviceName }}:{{ .Values.components.ecostreamManager.port }}"
-          - name: REACT_APP_ECOSTREAM_MANAGER_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: ecostream-manager-secret
-                key: ECOSTREAM_MANAGER_USERNAME
-          - name: REACT_APP_ECOSTREAM_MANAGER_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: ecostream-manager-secret
-                key: ECOSTREAM_MANAGER_PASSWORD
+        - name: REACT_APP_ECOSTREAM_MANAGER_URL
+          valueFrom:
+            configMapKeyRef:
+              name: ecostream-configmap
+              key: ECOSTREAM_MANAGER_URL
+        - name: REACT_APP_ECOSTREAM_MANAGER_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: ecostream-manager-secret
+              key: ECOSTREAM_MANAGER_USERNAME
+        - name: REACT_APP_ECOSTREAM_MANAGER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ecostream-manager-secret
+              key: ECOSTREAM_MANAGER_PASSWORD

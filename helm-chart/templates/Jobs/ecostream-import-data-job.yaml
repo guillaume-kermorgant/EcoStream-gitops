@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ecostream-import-data
+  namespace: "{{ .Values.namespace }}"
+spec:
+  template:
+    spec:
+      serviceAccountName: ecostream-sa
+      containers:
+        - name: import-data
+          image: "{{ .Values.tools.kubectl.image.repository }}:{{ .Values.tools.kubectl.image.tag }}"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /tmp/import-data.sh
+              key: import-data.sh
+          env:
+          - name: ECOSTREAM_MANAGER_URL
+            valueFrom:
+              configMapKeyRef:
+                name: ecostream-configmap
+                key: ECOSTREAM_MANAGER_URL
+          - name: ECOSTREAM_MANAGER_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ecostream-manager-secret
+                key: ECOSTREAM_MANAGER_USERNAME
+          - name: ECOSTREAM_MANAGER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ecostream-manager-secret
+                key: ECOSTREAM_MANAGER_PASSWORD
+          - name: import-data.sh
+            valueFrom:
+              configMapKeyRef:
+                name: ecostream-configmap
+                key: import-data.sh
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              set -e
+              
+              chmod +x /tmp/import-data.sh
+              echo "This job is not implemented yet"
+              echo "TODO: download dataset from external source (S3 from instance?) and upload it here"
+
+              echo "Done!"
+      volumes:
+        - name: config-volume
+          configMap:
+            name: ecostream-configmap
+      restartPolicy: Never
+  backoffLimit: 2
