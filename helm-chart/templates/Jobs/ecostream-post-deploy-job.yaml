@@ -13,25 +13,12 @@ spec:
         env:
         - name: NAMESPACE
           value: "{{ .Values.namespace }}"
-        - name: CERTIFICATE_ARN
-          valueFrom:
-            configMapKeyRef:
-              name: ecostream-predeploy-configmap
-              key: CERTIFICATE_ARN
         command: [ "/bin/sh", "-c" ]
         args:
         - |
           set -e
-          echo "Retrieving Ecostream Manager Ingress address..."
-          ecostreamManagerAddress=$(kubectl get ingress ecostream-manager-ingress -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-          echo "Ecostream Manager Ingress address is $ecostreamManagerAddress"
-
-          echo "Patching Ingresses to add certificate annotation..."
-          for ingress in ecostream-visualizer-ingress ecostream-manager-ingress; do
-            kubectl annotate ingress $ingress |
-              alb.ingress.kubernetes.io/certificate-arn=$CERTIFICATE_ARN \
-              --overwrite -n $NAMESPACE
-          done
+          
+          echo "Does not do anything for now..."
 
           echo "Done!"
 

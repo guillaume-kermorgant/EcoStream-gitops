@@ -29,6 +29,14 @@ ecostream-manager-748694bcd4-xptlr    1/1     Running     0          31s
 ecostream-visualizer-9fc44cc6-w4tt9   1/1     Running     0          31s
 ```
 
+- if you have not configured your own host name with ACM, you can retrieve the EcoStream Visuliazer hostname with the following command:
+
+```
+kubectl get ingress -o json | jq -r '.items[] | select(.metadata.name | test("ecostream-visualizer-ingress")).status.loadBalancer.ingress[0].hostname'
+```
+
+then open the URL prefixed with http:// in your browser.
+
 - upgrade the deployment (if you made any modifications to the Chart):
 
 ```

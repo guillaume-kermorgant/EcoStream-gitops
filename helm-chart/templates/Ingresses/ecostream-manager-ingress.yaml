@@ -7,9 +7,17 @@ metadata:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/scheme: internet-facing
+{{- if .Values.settings.certificateARN }}
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+{{- else  }}
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+{{ end }}
+{{- if .Values.settings.ecostreamHostname }}
+    external-dns.alpha.kubernetes.io/hostname: "{{ .Values.settings.ecostreamHostname }}"
+{{- end  }}
 spec:
   rules:
-    # - host: "ecostream-manager.local" // set this to custom hostname
     - http:
         paths:
           - path: /
@@ -19,3 +27,6 @@ spec:
                 name: "{{ .Values.components.ecostreamManager.serviceName }}"
                 port:
                   number: {{ .Values.components.ecostreamManager.port }}
+{{- if .Values.settings.ecostreamHostname }}
+      host: "{{ .Values.settings.ecostreamHostname }}"
+{{- end  }}

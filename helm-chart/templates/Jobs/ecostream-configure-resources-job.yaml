@@ -15,19 +15,29 @@ spec:
             value: "{{ .Values.namespace }}"
           - name: ECOSTREAM_CONFIGMAP_NAME
             value: "{{ .Values.settings.ecostreamConfiMapName }}"
+{{- if .Values.settings.ecostreamHostname }}
+          - name: ECOSTREAM_HOSTNAME
+            value: "{{ .Values.settings.ecostreamHostname }}"
+{{- end }}
           command: ["/bin/sh", "-c"]
           args:
             - |
               set -e
               echo "Retrieving Ecostream Manager Ingress address..."
-              ecostreamManagerAddress=$(kubectl get ingress ecostream-manager-ingress -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+
+              if [ -z "${ECOSTREAM_HOSTNAME}" ]; then
+                ecostreamManagerAddress="http://$(kubectl get ingress ecostream-manager-ingress -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+              else
+                ecostreamManagerAddress="https://${ECOSTREAM_HOSTNAME}"
+              fi
+
               echo "Ecostream Manager Ingress address is $ecostreamManagerAddress"
 
               echo "Creating/updating Ecostream ConfigMap..."
               kubectl patch configmap $ECOSTREAM_CONFIGMAP_NAME \
                 --namespace $NAMESPACE \
                 --type merge \
-                -p "{\"data\":{\"ECOSTREAM_MANAGER_URL\":\"http://${ecostreamManagerAddress}\"}}"
+                -p "{\"data\":{\"ECOSTREAM_MANAGER_URL\":\"${ecostreamManagerAddress}\"}}"
 
               echo "Done!"
 

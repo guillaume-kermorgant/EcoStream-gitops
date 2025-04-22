@@ -42,7 +42,7 @@ spec:
               
               chmod +x /tmp/import-data.sh
               echo "This job is not implemented yet"
-              echo "TODO: download dataset from external source (S3 from instance?) and upload it here"
+              echo "TODO: download dataset from external source (clone ecostream-database repo) and upload it here"
 
               echo "Done!"
       volumes:
