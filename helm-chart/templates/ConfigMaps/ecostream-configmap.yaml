@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ecostream-configmap
+  name: {{ .Values.settings.ecostreamConfiMapName }}
   namespace: {{ .Values.namespace }}
 data:
   import-data.sh: |-

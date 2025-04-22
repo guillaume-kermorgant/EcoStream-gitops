@@ -18,7 +18,7 @@ spec:
           - name: ECOSTREAM_MANAGER_URL
             valueFrom:
               configMapKeyRef:
-                name: ecostream-configmap
+                name: {{ .Values.settings.ecostreamConfiMapName }}
                 key: ECOSTREAM_MANAGER_URL
           - name: ECOSTREAM_MANAGER_USERNAME
             valueFrom:
@@ -33,7 +33,7 @@ spec:
           - name: import-data.sh
             valueFrom:
               configMapKeyRef:
-                name: ecostream-configmap
+                name: {{ .Values.settings.ecostreamConfiMapName }}
                 key: import-data.sh
           command: ["/bin/sh", "-c"]
           args:
@@ -48,6 +48,6 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: ecostream-configmap
+            name: {{ .Values.settings.ecostreamConfiMapName }}
       restartPolicy: Never
   backoffLimit: 2

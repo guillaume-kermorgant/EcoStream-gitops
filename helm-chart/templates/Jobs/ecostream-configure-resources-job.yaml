@@ -13,6 +13,8 @@ spec:
           env:
           - name: NAMESPACE
             value: "{{ .Values.namespace }}"
+          - name: ECOSTREAM_CONFIGMAP_NAME
+            value: "{{ .Values.settings.ecostreamConfiMapName }}"
           command: ["/bin/sh", "-c"]
           args:
             - |
@@ -22,7 +24,7 @@ spec:
               echo "Ecostream Manager Ingress address is $ecostreamManagerAddress"
 
               echo "Creating/updating Ecostream ConfigMap..."
-              kubectl patch configmap ecostream-configmap \
+              kubectl patch configmap $ECOSTREAM_CONFIGMAP_NAME \
                 --namespace $NAMESPACE \
                 --type merge \
                 -p "{\"data\":{\"ECOSTREAM_MANAGER_URL\":\"http://${ecostreamManagerAddress}\"}}"

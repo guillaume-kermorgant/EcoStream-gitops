@@ -26,7 +26,7 @@ spec:
         - name: REACT_APP_ECOSTREAM_MANAGER_URL
           valueFrom:
             configMapKeyRef:
-              name: ecostream-configmap
+              name: {{ .Values.settings.ecostreamConfiMapName }}
               key: ECOSTREAM_MANAGER_URL
         - name: REACT_APP_ECOSTREAM_MANAGER_USERNAME
           valueFrom:
