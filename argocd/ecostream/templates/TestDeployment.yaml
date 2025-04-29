@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecostream-manager
+  namespace: "{{ .Values.namespace }}"
+  labels:
+    app: ecostream-manager
+spec:
+  replicas: {{ .Values.settings.ha | ternary 3 1 }}
+  selector:
+    matchLabels:
+      app: ecostream-manager
+  template:
+    metadata:
+      labels:
+        app: ecostream-manager
+    spec:
+      imagePullSecrets:
+        - name: ecostream-container-registry-secret
+      containers:
+        - name: ecostream-manager
+          image: "{{ .Values.components.ecostreamManager.image.repository }}:{{ .Values.components.ecostreamManager.image.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.components.ecostreamManager.port }}
+              name: manager-http

@@ -1,0 +1,33 @@
+namespace: ecostream
+components:
+  ecostreamManager:
+    serviceName: ecostream-manager-service
+    port: 9000
+    image:
+      repository: registry.gitlab.com/gkermo/ecostream-manager
+      tag: main-cfb453a5-amd64
+  ecostreamVisualizer:
+    serviceName: ecostream-visualizer-service
+    port: 80
+    image:
+      repository: registry.gitlab.com/gkermo/ecostream-visualizer
+      tag: main-966e2a59-amd64
+  ecostreamDatabase:
+    serviceName: ecostream-database-service
+    port: 5432
+    image:
+      repository: registry.gitlab.com/gkermo/ecostream-database
+      tag: main-b50b0727-amd64
+settings:
+  ha: false
+  ecostreamConfiMapName: "ecostream-configmap"
+  # commenting for now. It's workinb but it takes a few minutes or even hours for DNS propagation to be properly done
+  # for a dev env, it would be better to use an nginx ingress controller and self-signed certificates
+  # ecostreamHostname: "kermo.click"
+  # ARN of certificate in AWS Certificate Manager (ACM)
+  # certificateARN: "arn:aws:acm:eu-west-3:531920760589:certificate/7260f458-3ecf-435c-9e55-d1e321fe39ba"
+tools:
+  kubectl:
+    image:
+      repository: registry.gitlab.com/gkermo/ecostream/base_images/bitnami-kubectl
+      tag: 1.32-amd64
