@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ecostream-manager-ingress
+  name: ecostream-visualizer-ingress
   namespace: "{{ .Values.namespace }}"
   annotations:
     kubernetes.io/ingress.class: alb
@@ -12,9 +12,9 @@ metadata:
     alb.ingress.kubernetes.io/ssl-redirect: '443'
 {{- else  }}
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
-{{ end }}
+{{- end }}
 {{- if .Values.settings.ecostreamHostname }}
-    external-dns.alpha.kubernetes.io/hostname: "{{ .Values.settings.ecostreamHostname }}"
+    external-dns.alpha.kubernetes.io/hostname: "visualizer.{{ .Values.settings.ecostreamHostname }}"
 {{- end  }}
 spec:
   rules:
@@ -24,9 +24,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: "{{ .Values.components.ecostreamManager.serviceName }}"
+                name: "{{ .Values.components.ecostreamVisualizer.serviceName }}"
                 port:
-                  number: {{ .Values.components.ecostreamManager.port }}
+                  number: {{ .Values.components.ecostreamVisualizer.port }}
 {{- if .Values.settings.ecostreamHostname }}
-      host: "{{ .Values.settings.ecostreamHostname }}"
+      host: "visualizer.{{ .Values.settings.ecostreamHostname }}"
 {{- end  }}

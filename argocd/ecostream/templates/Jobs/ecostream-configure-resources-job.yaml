@@ -28,7 +28,7 @@ spec:
               if [ -z "${ECOSTREAM_HOSTNAME}" ]; then
                 ecostreamManagerAddress="http://$(kubectl get ingress ecostream-manager-ingress -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
               else
-                ecostreamManagerAddress="https://${ECOSTREAM_HOSTNAME}"
+                ecostreamManagerAddress="https://manager.${ECOSTREAM_HOSTNAME}"
               fi
 
               echo "Ecostream Manager Ingress address is $ecostreamManagerAddress"

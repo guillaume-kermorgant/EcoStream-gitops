@@ -23,9 +23,9 @@ settings:
   ecostreamConfiMapName: "ecostream-configmap"
   # commenting for now. It's workinb but it takes a few minutes or even hours for DNS propagation to be properly done
   # for a dev env, it would be better to use an nginx ingress controller and self-signed certificates
-  # ecostreamHostname: "kermo.click"
+  ecostreamHostname: "kermo.click"
   # ARN of certificate in AWS Certificate Manager (ACM)
-  # certificateARN: "arn:aws:acm:eu-west-3:531920760589:certificate/7260f458-3ecf-435c-9e55-d1e321fe39ba"
+  certificateARN: "arn:aws:acm:eu-west-3:531920760589:certificate/7260f458-3ecf-435c-9e55-d1e321fe39ba"
 tools:
   kubectl:
     image:
