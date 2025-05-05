@@ -41,10 +41,15 @@ spec:
           args:
             - |
               set -e
-              
-              chmod +x /tmp/import-data.sh
-              echo "This job is not implemented yet"
-              echo "TODO: download dataset from external source (clone ecostream-database repo) and upload it here"
+
+              echo "Extracting GitLab credentials from secret"
+              gitlabRegistryCreds=$(cat /dockerconfig/.dockerconfigjson | base64 -d | jq -r '.auths["https://registry.gitlab.com"]')
+              gitlabUser=$(echo $CREDS | jq -r '.username')
+              gitlabPassword=$(echo $CREDS | jq -r '.password')
+              echo "Cloning GitLab database repository"
+              git clone https://${gitlabUser}:${gitlabPassword}@gitlab.com/gkermo/ecostream-database.git
+              cd ecostream-database/data
+              ./populate_ecostream_db.sh
 
               echo "Done!"
       volumes:
