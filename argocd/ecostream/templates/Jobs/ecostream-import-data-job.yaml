@@ -52,9 +52,16 @@ spec:
               ./populate_ecostream_db.sh
 
               echo "Done!"
+          volumeMounts:
+            - name: docker-secret
+              mountPath: /dockerconfig
+              readOnly: true
       volumes:
         - name: config-volume
           configMap:
             name: {{ .Values.settings.ecostreamConfiMapName }}
+        - name: docker-secret
+          secret:
+            secretName: ecostream-container-registry-secret
       restartPolicy: Never
   backoffLimit: 2
