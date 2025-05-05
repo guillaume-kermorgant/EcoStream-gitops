@@ -25,7 +25,7 @@ settings:
   # for a dev env, it would be better to use an nginx ingress controller and self-signed certificates or some other handy solution for dev
   ecostreamHostname: "kermo.click"
   # ARN of certificate in AWS Certificate Manager (ACM)
-  certificateARN: "arn:aws:acm:eu-west-3:531920760589:certificate/7260f458-3ecf-435c-9e55-d1e321fe39ba"
+  certificateARN: "arn:aws:acm:eu-west-3:531920760589:certificate/f1f058cf-9e44-4fc4-bada-048e7a4abf2e"
 tools:
   kubectl:
     image:
