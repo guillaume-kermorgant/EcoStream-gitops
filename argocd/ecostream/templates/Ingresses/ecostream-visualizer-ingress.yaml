@@ -4,12 +4,14 @@ metadata:
   name: ecostream-visualizer-ingress
   namespace: "{{ .Values.namespace }}"
   annotations:
+    argocd.argoproj.io/sync-wave: "1"
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/scheme: internet-facing
 {{- if .Values.settings.certificateARN }}
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/certificate-arn: "{{ .Values.settings.certificateARN }}"
 {{- else  }}
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
 {{- end }}

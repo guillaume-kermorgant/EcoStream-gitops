@@ -3,6 +3,8 @@ kind: PersistentVolume
 metadata:
   name: ecostream-pv
   namespace: "{{ .Values.namespace }}"
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
   labels:
     type: local
     app: ecostream-database

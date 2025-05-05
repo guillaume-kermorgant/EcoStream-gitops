@@ -3,6 +3,8 @@ kind: ServiceAccount
 metadata:
   name: ecostream-sa
   namespace: "{{ .Values.namespace }}"
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 imagePullSecrets:
   - name: ecostream-container-registry-secret
 ---
@@ -11,6 +13,8 @@ kind: Role
 metadata:
   name: ecostream-role
   namespace: "{{ .Values.namespace }}"
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 rules:
   - apiGroups: [""]
     resources: ["configmaps"]
@@ -24,6 +28,8 @@ kind: RoleBinding
 metadata:
   name: ecostream-role-binding
   namespace: "{{ .Values.namespace }}"
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 subjects:
   - kind: ServiceAccount
     name: ecostream-sa

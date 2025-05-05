@@ -3,6 +3,8 @@ kind: Job
 metadata:
   name: ecostream-import-data
   namespace: "{{ .Values.namespace }}"
+  annotations:
+    argocd.argoproj.io/hook: PostSync
 spec:
   template:
     spec:

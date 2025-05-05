@@ -5,6 +5,8 @@ metadata:
   namespace: "{{ .Values.namespace }}"
   labels:
     app: ecostream-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   replicas: {{ .Values.settings.ha | ternary 3 1 }}
   selector:

@@ -3,6 +3,8 @@ kind: Job
 metadata:
   name: ecostream-configure-resources
   namespace: "{{ .Values.namespace }}"
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   template:
     spec:

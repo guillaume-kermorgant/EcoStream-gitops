@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.settings.ecostreamConfiMapName }}
   namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 data:
   import-data.sh: |-
     # This script populates the EcoStream database with the data from the aiq_data_france.json file
