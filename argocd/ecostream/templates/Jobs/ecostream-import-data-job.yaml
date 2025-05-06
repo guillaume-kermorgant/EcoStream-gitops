@@ -51,6 +51,8 @@ spec:
               fi
 
               echo "Done!"
+              exit 0
+
           volumeMounts:
             - name: docker-secret
               mountPath: /dockerconfig
