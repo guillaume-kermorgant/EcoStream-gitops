@@ -31,3 +31,7 @@ tools:
     image:
       repository: registry.gitlab.com/gkermo/ecostream/base_images/bitnami-kubectl
       tag: 1.32-amd64
+  alpine:
+    image:
+      repository: registry.gitlab.com/gkermo/ecostream/base_images/alpine
+      tag: 3.19-amd64

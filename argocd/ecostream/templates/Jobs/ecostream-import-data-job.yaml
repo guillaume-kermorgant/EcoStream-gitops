@@ -11,7 +11,7 @@ spec:
       serviceAccountName: ecostream-sa
       containers:
         - name: import-data
-          image: "{{ .Values.tools.kubectl.image.repository }}:{{ .Values.tools.kubectl.image.tag }}"
+          image: "{{ .Values.tools.alpine.image.repository }}:{{ .Values.tools.alpine.image.tag }}"
           env:
           - name: ECOSTREAM_MANAGER_URL
             valueFrom:
@@ -33,23 +33,32 @@ spec:
             - |
               set -e
 
-              echo "Extracting GitLab credentials from secret"
-              gitlabRegistryCreds=$(cat /dockerconfig/.dockerconfigjson | base64 -d | jq -r '.auths["https://registry.gitlab.com"]')
-              gitlabUser=$(echo $CREDS | jq -r '.username')
-              gitlabPassword=$(echo $CREDS | jq -r '.password')
+              echo "Extracting GitLab credentials from secret..."
+              gitlabRegistryCreds=$(cat /dockerconfig/.dockerconfigjson | jq -r '.auths["https://registry.gitlab.com"]')
+              gitlabUser=$(echo $gitlabRegistryCreds | jq -r '.username')
+              gitlabPassword=$(echo $gitlabRegistryCreds | jq -r '.password')
               echo "Cloning GitLab database repository"
+              cd /tmp
               git clone https://${gitlabUser}:${gitlabPassword}@gitlab.com/gkermo/ecostream-database.git
               cd ecostream-database/data
-              ./populate_ecostream_db.sh
+              pwd
+              ls
+              echo "Running populate database script..."
+              set -x
+              . populate_ecostream_db.sh
 
               echo "Done!"
           volumeMounts:
             - name: docker-secret
               mountPath: /dockerconfig
               readOnly: true
+            - name: cache-volume
+              mountPath: /tmp
       volumes:
         - name: docker-secret
           secret:
             secretName: ecostream-container-registry-secret
+        - name: cache-volume
+          emptyDir: {}
       restartPolicy: Never
   backoffLimit: 2
