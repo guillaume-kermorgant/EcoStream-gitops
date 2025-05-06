@@ -24,5 +24,7 @@ spec:
 
           echo "Done!"
 
+          exit 0
+
       restartPolicy: Never
   backoffLimit: 2
