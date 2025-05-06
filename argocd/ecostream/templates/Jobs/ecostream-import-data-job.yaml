@@ -41,11 +41,14 @@ spec:
               cd /tmp
               git clone https://${gitlabUser}:${gitlabPassword}@gitlab.com/gkermo/ecostream-database.git
               cd ecostream-database/data
-              pwd
-              ls
               echo "Running populate database script..."
-              set -x
-              . populate_ecostream_db.sh
+              ( . populate_ecostream_db.sh )
+              exit_code=$?
+              if [[ $exit_code -ne 0 ]]; then
+                  echo "Populate database script failed, there might already be some data" >&2
+              else
+                  echo "Populate database script completed successfully"
+              fi
 
               echo "Done!"
           volumeMounts:
