@@ -12,10 +12,6 @@ spec:
       containers:
         - name: import-data
           image: "{{ .Values.tools.kubectl.image.repository }}:{{ .Values.tools.kubectl.image.tag }}"
-          volumeMounts:
-            - name: config-volume
-              mountPath: /tmp/import-data.sh
-              key: import-data.sh
           env:
           - name: ECOSTREAM_MANAGER_URL
             valueFrom:
@@ -57,9 +53,6 @@ spec:
               mountPath: /dockerconfig
               readOnly: true
       volumes:
-        - name: config-volume
-          configMap:
-            name: {{ .Values.settings.ecostreamConfiMapName }}
         - name: docker-secret
           secret:
             secretName: ecostream-container-registry-secret
