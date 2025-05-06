@@ -28,11 +28,6 @@ spec:
               secretKeyRef:
                 name: ecostream-manager-secret
                 key: ECOSTREAM_MANAGER_PASSWORD
-          - name: import-data.sh
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.settings.ecostreamConfiMapName }}
-                key: import-data.sh
           command: ["/bin/sh", "-c"]
           args:
             - |
