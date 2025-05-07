@@ -6,12 +6,12 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
   labels:
-    type: local
+    type: aws-ebs
     app: ecostream-database
 spec:
   accessModes:
   - ReadWriteOnce
-  capacity:
-    storage: 1Gi
-  hostPath:
-    path: /data/ecostreampv
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: auto-ebs-sc
