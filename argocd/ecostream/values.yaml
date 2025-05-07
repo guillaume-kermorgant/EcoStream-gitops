@@ -17,7 +17,7 @@ components:
     port: 5432
     image:
       repository: registry.gitlab.com/gkermo/ecostream-database
-      tag: main-b50b0727-amd64
+      tag: main-7cc55721-amd64
 settings:
   ha: false
   ecostreamConfiMapName: "ecostream-configmap"
