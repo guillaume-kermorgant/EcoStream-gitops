@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: ecostream-database
   namespace: "{{ .Values.namespace }}"
@@ -47,7 +47,12 @@ spec:
         volumeMounts:
         - mountPath: /var/lib/postgresql/data
           name: ecostream-volume
-      volumes:
-      - name: ecostream-volume
-        persistentVolumeClaim:
-          claimName: ecostream-pvc
+  volumeClaimTemplates:
+    - metadata:
+        name: ecostream-volume
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: auto-ebs-sc
+        resources:
+          requests:
+            storage: 1Gi
