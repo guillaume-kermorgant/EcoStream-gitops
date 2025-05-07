@@ -5,7 +5,7 @@ components:
     port: 9000
     image:
       repository: registry.gitlab.com/gkermo/ecostream-manager
-      tag: main-22d82727-amd64
+      tag: main-319f02e6-amd64
   ecostreamVisualizer:
     serviceName: ecostream-visualizer-service
     port: 80
