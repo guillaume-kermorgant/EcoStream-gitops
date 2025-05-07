@@ -44,6 +44,8 @@ spec:
               secretKeyRef:
                 name: ecostream-database-secret
                 key: ECOSTREAM_DB_PASSWORD
+          - name: PGDATA
+            value: /var/lib/postgresql/data/pgdata
         volumeMounts:
         - mountPath: /var/lib/postgresql/data
           name: ecostream-volume
