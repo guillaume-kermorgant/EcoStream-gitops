@@ -11,7 +11,7 @@ components:
     port: 80
     image:
       repository: registry.gitlab.com/gkermo/ecostream-visualizer
-      tag: main-966e2a59-amd64
+      tag: main-7fb08b80-amd64
   ecostreamDatabase:
     serviceName: ecostream-database-service
     port: 5432
