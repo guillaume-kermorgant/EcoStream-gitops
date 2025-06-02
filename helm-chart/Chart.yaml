@@ -1,5 +1,0 @@
-apiVersion: v2
-name: ecostream
-description: Helm chart for EcoStream
-version: 1.0.0
-appVersion: 1.0.0
